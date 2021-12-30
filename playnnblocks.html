@@ -1,0 +1,428 @@
+<html>
+<head>
+    <link rel="stylesheet" src="https://github.com/pbauerochse/searchable-option-list/blob/master/sol.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://github.com/pbauerochse/searchable-option-list/blob/master/sol.js"></script>
+    <script type="text/javascript" src="/eel.js"></script>
+</head>
+<body>
+    <button id="layer" onclick="add_new_layer()" class="layertype" type="button">Create layer</button>
+
+    <div class="compile">
+        <p>Loss Type : </p><select class="diffcolor" placeholder="loss">
+            <option value="binary_crossentropy">binary_crossentropy</option>
+            <option value="categorical_crossentropy">categorical_crossentropy</option>
+            <option value="poisson">poisson</option>
+            <option value="kl_divergence">kl_divergence</option>
+            <option value="mean_squared_error">mean_squared_error</option>
+            <option value="mean_absolute_error">mean_absolute_error</option>
+            <option value="mean_squared_logarithmic_error">mean_squared_logarithmic_error</option>
+            <option value="mean_absolute_percentage_error">mean_absolute_percentage_error</option>
+            <option value="cosine_similarity">cosine_similarity</option>
+            <option value="mean_absolute_percentage_error">mean_absolute_percentage_error</option>
+            <option value="huber_loss">huber_loss</option>
+            <option value="log_cosh">log_cosh</option>
+
+
+        </select>
+    </div>
+    <div class="compile3">
+        <p>Optimizer : </p><select class="diffcolor" placeholder="loss">
+            <option value="sgd">sgd</option>
+            <option value="RMSprop">RMSprop</option>
+            <option value="adam">adam</option>
+            <option value="adadelta">adadelta</option>
+            <option value="adagrad">adagrad</option>
+            <option value="adamax">adamax</option>
+            <option value="nadam">nadam</option>
+            <option value="ftrl">ftrl</option>
+
+        </select>
+
+    </div>
+
+
+    <button id="compile4" onclick="exp()" type="button">Copy Python code</button>
+
+    <div id="layers">
+
+    </div>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Mohave:wght@300&family=Montserrat:wght@100&family=Readex+Pro:wght@200&display=swap');
+        body {
+            background-color: rgb(50,50,50);
+            color: white;
+        }
+        .layer {
+            width: 800px;
+            flex-wrap: wrap;
+            border-radius: 10px;
+            background-color: white;
+            border: 5px solid red;
+            text-align: center;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: bold;
+            margin-top: 10px;
+            padding: 10px;
+            font-size: 20px;
+            background-color: rgb(50,50,50);
+        }
+
+        .layertype {
+            top: 1px;
+            right: 3px;
+            margin-top: 10px;
+            background-color: white;
+            border: 5px solid aqua;
+            border-radius: 10px;
+            padding: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: bold;
+            position: fixed;
+            background-color: rgb(50,50,50);
+            color: white;
+        }
+        #compile4 {
+            top: 400px;
+            right: 3px;
+            margin-top: 10px;
+            background-color: white;
+            border: 5px solid aqua;
+            border-radius: 10px;
+            padding: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: bold;
+            position: fixed;
+            background-color: rgb(50,50,50);
+        }
+        .delete {
+            background-color: white;
+            border: 5px solid aqua;
+            border-radius: 10px;
+            padding: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: bold;
+            margin-left: 10px;
+            margin-bottom: 10px;
+            background-color: rgb(50,50,50);
+            color: white;
+        }
+
+        .diffcolor {
+            border-radius: 5px;
+            padding: 5px;
+            font-family: 'Montserrat', sans-serif;
+            border: 5px solid aqua;
+            font-weight: bolder;
+            background-color: rgb(50,50,50);
+            color: white;
+        }
+
+        .compile {
+            top: 100px;
+            right: 3px;
+            margin-top: 10px;
+            background-color: white;
+            border: 5px solid aqua;
+            border-radius: 10px;
+            padding: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: bold;
+            position: fixed;
+            background-color: rgb(50,50,50);
+            color: white;
+        }
+
+        .compile2 {
+            top: 250px;
+            right: 3px;
+            margin-top: 10px;
+            background-color: white;
+            border: 5px solid aqua;
+            border-radius: 10px;
+            padding: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: bold;
+            position: fixed;
+            background-color: rgb(50,50,50);
+            color: white;
+        }
+
+        .compile3 {
+            top: 250px;
+            right: 3px;
+            margin-top: 10px;
+            background-color: white;
+            border: 5px solid aqua;
+            border-radius: 10px;
+            padding: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: bold;
+            position: fixed;
+            background-color: rgb(50,50,50);
+        }
+        .compile4 {
+            top: 400px;
+            right: 3px;
+            margin-top: 10px;
+            background-color: white;
+            border: 5px solid aqua;
+            border-radius: 10px;
+            padding: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: bold;
+            position: fixed;
+            color: white;
+        }
+        #compile4 {
+            color: white;
+        }
+        input {
+            margin-left: 10px;
+            border-radius: 5px;
+            padding: 5px;
+            font-family: 'Montserrat', sans-serif;
+            border: 5px solid red;
+            font-weight: bolder;
+            margin-bottom: 10px;
+            background-color: rgb(50,50,50);
+            color: white;
+        }
+
+        select {
+            border-radius: 5px;
+            padding: 5px;
+            font-family: 'Montserrat', sans-serif;
+            border: 5px solid red;
+            font-weight: bolder;
+            background-color: rgb(50,50,50);
+            color: white;
+        }
+    </style>
+
+    <script>
+        // THIS ENTIRE SCRIPT IS FRICKING MASSACRE I HAD TO KILL MYSELF MULTIPLE TIMES WHILE MAKING THIS PLEASE SEND HELP AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        //AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        //AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        owo = { 'AbstractRNNCell': ['trainable=True', 'name=None', 'dtype=None', 'dynamic=False'], 'Activation': ['activation'], 'ActivityRegularization': ['l1=0.0', 'l2=0.0'], 'Add': [''], 'AdditiveAttention': ['use_scale=True'], 'AlphaDropout': ['rate', 'noise_shape=None', 'seed=None'], 'Attention': ['use_scale=False'], 'Average': ['No params'], 'AveragePooling1D': ['pool_size=2', 'strides=None', "padding='valid'", "data_format='channels_last'"], 'AveragePooling2D': ['pool_size=(2,2)', 'strides=None', "padding='valid'", 'data_format=None'], 'AveragePooling3D': ['pool_size=(2,2,2)', 'strides=None', "padding='valid'", 'data_format=None'], 'AvgPool1D': ['pool_size=2', 'strides=None', "padding='valid'", "data_format='channels_last'"], 'AvgPool2D': ['pool_size=(2,2)', 'strides=None', "padding='valid'", 'data_format=None'], 'AvgPool3D': ['pool_size=(2,2,2)', 'strides=None', "padding='valid'", 'data_format=None'], 'BatchNormalization': ['axis=-1', 'momentum=0.99', 'epsilon=0.001', 'center=True', 'scale=True', "beta_initializer='zeros'", "gamma_initializer='ones'", "moving_mean_initializer='zeros'", "moving_variance_initializer='ones'", 'beta_regularizer=None', 'gamma_regularizer=None', 'beta_constraint=None', 'gamma_constraint=None'], 'Bidirectional': ['layer', "merge_mode='concat'", 'weights=None', 'backward_layer=None'], 'Concatenate': ['axis=-1'], 'Conv1D': ['filters', 'kernel_size', 'strides=1', "padding='valid'", "data_format='channels_last'", 'dilation_rate=1', 'groups=1', 'activation=None', 'use_bias=True', "kernel_initializer='glorot_uniform'", "bias_initializer='zeros'", 'kernel_regularizer=None', 'bias_regularizer=None', 'activity_regularizer=None', 'kernel_constraint=None', 'bias_constraint=None'], 'Conv1DTranspose': ['filters', 'kernel_size', 'strides=1', "padding='valid'", 'output_padding=None', 'data_format=None', 'dilation_rate=1', 'activation=None', 'use_bias=True', "kernel_initializer='glorot_uniform'", "bias_initializer='zeros'", 'kernel_regularizer=None', 'bias_regularizer=None', 'activity_regularizer=None', 'kernel_constraint=None', 'bias_constraint=None'], 'Conv2D': ['filters', 'kernel_size', 'strides=(1,1)', "padding='valid'", 'data_format=None', 'dilation_rate=(1,1)', 'groups=1', 'activation=None', 'use_bias=True', "kernel_initializer='glorot_uniform'", "bias_initializer='zeros'", 'kernel_regularizer=None', 'bias_regularizer=None', 'activity_regularizer=None', 'kernel_constraint=None', 'bias_constraint=None'], 'Conv2DTranspose': ['filters', 'kernel_size', 'strides=(1,1)', "padding='valid'", 'output_padding=None', 'data_format=None', 'dilation_rate=(1,1)', 'activation=None', 'use_bias=True', "kernel_initializer='glorot_uniform'", "bias_initializer='zeros'", 'kernel_regularizer=None', 'bias_regularizer=None', 'activity_regularizer=None', 'kernel_constraint=None', 'bias_constraint=None'], 'Conv3D': ['filters', 'kernel_size', 'strides=(1,1,1)', "padding='valid'", 'data_format=None', 'dilation_rate=(1,1,1)', 'groups=1', 'activation=None', 'use_bias=True', "kernel_initializer='glorot_uniform'", "bias_initializer='zeros'", 'kernel_regularizer=None', 'bias_regularizer=None', 'activity_regularizer=None', 'kernel_constraint=None', 'bias_constraint=None'], 'Conv3DTranspose': ['filters', 'kernel_size', 'strides=(1,1,1)', "padding='valid'", 'output_padding=None', 'data_format=None', 'dilation_rate=(1,1,1)', 'activation=None', 'use_bias=True', "kernel_initializer='glorot_uniform'", "bias_initializer='zeros'", 'kernel_regularizer=None', 'bias_regularizer=None', 'activity_regularizer=None', 'kernel_constraint=None', 'bias_constraint=None'], 'ConvLSTM2D': ['filters', 'kernel_size', 'strides=(1,1)', "padding='valid'", 'data_format=None', 'dilation_rate=(1,1)', "activation='tanh'", "recurrent_activation='hard_sigmoid'", 'use_bias=True', "kernel_initializer='glorot_uniform'", "recurrent_initializer='orthogonal'", "bias_initializer='zeros'", 'unit_forget_bias=True', 'kernel_regularizer=None', 'recurrent_regularizer=None', 'bias_regularizer=None', 'activity_regularizer=None', 'kernel_constraint=None', 'recurrent_constraint=None', 'bias_constraint=None', 'return_sequences=False', 'return_state=False', 'go_backwards=False', 'stateful=False', 'dropout=0.0', 'recurrent_dropout=0.0'], 'Convolution1D': ['filters', 'kernel_size', 'strides=1', "padding='valid'", "data_format='channels_last'", 'dilation_rate=1', 'groups=1', 'activation=None', 'use_bias=True', "kernel_initializer='glorot_uniform'", "bias_initializer='zeros'", 'kernel_regularizer=None', 'bias_regularizer=None', 'activity_regularizer=None', 'kernel_constraint=None', 'bias_constraint=None'], 'Convolution1DTranspose': ['filters', 'kernel_size', 'strides=1', "padding='valid'", 'output_padding=None', 'data_format=None', 'dilation_rate=1', 'activation=None', 'use_bias=True', "kernel_initializer='glorot_uniform'", "bias_initializer='zeros'", 'kernel_regularizer=None', 'bias_regularizer=None', 'activity_regularizer=None', 'kernel_constraint=None', 'bias_constraint=None'], 'Convolution2D': ['filters', 'kernel_size', 'strides=(1,1)', "padding='valid'", 'data_format=None', 'dilation_rate=(1,1)', 'groups=1', 'activation=None', 'use_bias=True', "kernel_initializer='glorot_uniform'", "bias_initializer='zeros'", 'kernel_regularizer=None', 'bias_regularizer=None', 'activity_regularizer=None', 'kernel_constraint=None', 'bias_constraint=None'], 'Convolution2DTranspose': ['filters', 'kernel_size', 'strides=(1,1)', "padding='valid'", 'output_padding=None', 'data_format=None', 'dilation_rate=(1,1)', 'activation=None', 'use_bias=True', "kernel_initializer='glorot_uniform'", "bias_initializer='zeros'", 'kernel_regularizer=None', 'bias_regularizer=None', 'activity_regularizer=None', 'kernel_constraint=None', 'bias_constraint=None'], 'Convolution3D': ['filters', 'kernel_size', 'strides=(1,1,1)', "padding='valid'", 'data_format=None', 'dilation_rate=(1,1,1)', 'groups=1', 'activation=None', 'use_bias=True', "kernel_initializer='glorot_uniform'", "bias_initializer='zeros'", 'kernel_regularizer=None', 'bias_regularizer=None', 'activity_regularizer=None', 'kernel_constraint=None', 'bias_constraint=None'], 'Convolution3DTranspose': ['filters', 'kernel_size', 'strides=(1,1,1)', "padding='valid'", 'output_padding=None', 'data_format=None', 'dilation_rate=(1,1,1)', 'activation=None', 'use_bias=True', "kernel_initializer='glorot_uniform'", "bias_initializer='zeros'", 'kernel_regularizer=None', 'bias_regularizer=None', 'activity_regularizer=None', 'kernel_constraint=None', 'bias_constraint=None'], 'Cropping1D': ['cropping=(1,1)'], 'Cropping2D': ['cropping=((0', '0)', '(0', '0))', 'data_format=None'], 'Cropping3D': ['cropping=((1,1)', '(1,1)', '(1,1))', 'data_format=None'], 'Dense': ['units', 'activation=None', 'use_bias=True', "kernel_initializer='glorot_uniform'", "bias_initializer='zeros'", 'kernel_regularizer=None', 'bias_regularizer=None', 'activity_regularizer=None', 'kernel_constraint=None', 'bias_constraint=None'], 'DenseFeatures': ['feature_columns', 'trainable=True', 'name=None'], 'DepthwiseConv2D': ['kernel_size', 'strides=(1,1)', "padding='valid'", 'depth_multiplier=1', 'data_format=None', 'dilation_rate=(1,1)', 'activation=None', 'use_bias=True', "depthwise_initializer='glorot_uniform'", "bias_initializer='zeros'", 'depthwise_regularizer=None', 'bias_regularizer=None', 'activity_regularizer=None', 'depthwise_constraint=None', 'bias_constraint=None'], 'Dot': ['axes', 'normalize=False'], 'Dropout': ['rate', 'noise_shape=None', 'seed=None'], 'ELU': ['alpha=1.0'], 'Embedding': ['input_dim', 'output_dim', "embeddings_initializer='uniform'", 'embeddings_regularizer=None', 'activity_regularizer=None', 'embeddings_constraint=None', 'mask_zero=False', 'input_length=None'], 'Flatten': ['data_format=None'], 'GRU': ['units', "activation='tanh'", "recurrent_activation='sigmoid'", 'use_bias=True', "kernel_initializer='glorot_uniform'", "recurrent_initializer='orthogonal'", "bias_initializer='zeros'", 'kernel_regularizer=None', 'recurrent_regularizer=None', 'bias_regularizer=None', 'activity_regularizer=None', 'kernel_constraint=None', 'recurrent_constraint=None', 'bias_constraint=None', 'dropout=0.0', 'recurrent_dropout=0.0', 'return_sequences=False', 'return_state=False', 'go_backwards=False', 'stateful=False', 'unroll=False', 'time_major=False', 'reset_after=True'], 'GRUCell': ['units', "activation='tanh'", "recurrent_activation='sigmoid'", 'use_bias=True', "kernel_initializer='glorot_uniform'", "recurrent_initializer='orthogonal'", "bias_initializer='zeros'", 'kernel_regularizer=None', 'recurrent_regularizer=None', 'bias_regularizer=None', 'kernel_constraint=None', 'recurrent_constraint=None', 'bias_constraint=None', 'dropout=0.0', 'recurrent_dropout=0.0', 'reset_after=True'], 'GaussianDropout': ['rate', 'seed=None'], 'GaussianNoise': ['stddev', 'seed=None'], 'GlobalAveragePooling1D': ["data_format='channels_last'"], 'GlobalAveragePooling2D': ['data_format=None', 'keepdims=False'], 'GlobalAveragePooling3D': ['data_format=None', 'keepdims=False'], 'GlobalAvgPool1D': ["data_format='channels_last'"], 'GlobalAvgPool2D': ['data_format=None', 'keepdims=False'], 'GlobalAvgPool3D': ['data_format=None', 'keepdims=False'], 'GlobalMaxPool1D': ["data_format='channels_last'", 'keepdims=False'], 'GlobalMaxPool2D': ['data_format=None', 'keepdims=False'], 'GlobalMaxPool3D': ['data_format=None', 'keepdims=False'], 'GlobalMaxPooling1D': ["data_format='channels_last'", 'keepdims=False'], 'GlobalMaxPooling2D': ['data_format=None', 'keepdims=False'], 'GlobalMaxPooling3D': ['data_format=None', 'keepdims=False'], 'Input': ['shape=None', 'batch_size=None', 'name=None', 'dtype=None', 'sparse=None', 'tensor=None', 'ragged=None', 'type_spec=None'], 'InputLayer': ['input_shape=None', 'batch_size=None', 'dtype=None', 'input_tensor=None', 'sparse=None', 'name=None', 'ragged=None', 'type_spec=None'], 'InputSpec': ['dtype=None', 'shape=None', 'ndim=None', 'max_ndim=None', 'min_ndim=None', 'axes=None', 'allow_last_axis_squeeze=False', ''], 'LSTM': ['units', "activation='tanh'", "recurrent_activation='sigmoid'", 'use_bias=True', "kernel_initializer='glorot_uniform'", "recurrent_initializer='orthogonal'", "bias_initializer='zeros'", 'unit_forget_bias=True', 'kernel_regularizer=None', 'recurrent_regularizer=None', 'bias_regularizer=None', 'activity_regularizer=None', 'kernel_constraint=None', 'recurrent_constraint=None', 'bias_constraint=None', 'dropout=0.0', 'recurrent_dropout=0.0', 'return_sequences=False', 'return_state=False', 'go_backwards=False', 'stateful=False', 'time_major=False', 'unroll=False'], 'LSTMCell': ['units', "activation='tanh'", "recurrent_activation='sigmoid'", 'use_bias=True', "kernel_initializer='glorot_uniform'", "recurrent_initializer='orthogonal'", "bias_initializer='zeros'", 'unit_forget_bias=True', 'kernel_regularizer=None', 'recurrent_regularizer=None', 'bias_regularizer=None', 'kernel_constraint=None', 'recurrent_constraint=None', 'bias_constraint=None', 'dropout=0.0', 'recurrent_dropout=0.0'], 'Lambda': ['function', 'output_shape=None', 'mask=None', 'arguments=None'], 'Layer': ['trainable=True', 'name=None', 'dtype=None', 'dynamic=False'], 'LayerNormalization': ['axis=-1', 'epsilon=0.001', 'center=True', 'scale=True', "beta_initializer='zeros'", "gamma_initializer='ones'", 'beta_regularizer=None', 'gamma_regularizer=None', 'beta_constraint=None', 'gamma_constraint=None'], 'LeakyReLU': ['alpha=0.3'], 'LocallyConnected1D': ['filters', 'kernel_size', 'strides=1', "padding='valid'", 'data_format=None', 'activation=None', 'use_bias=True', "kernel_initializer='glorot_uniform'", "bias_initializer='zeros'", 'kernel_regularizer=None', 'bias_regularizer=None', 'activity_regularizer=None', 'kernel_constraint=None', 'bias_constraint=None', 'implementation=1'], 'LocallyConnected2D': ['filters', 'kernel_size', 'strides=(1,1)', "padding='valid'", 'data_format=None', 'activation=None', 'use_bias=True', "kernel_initializer='glorot_uniform'", "bias_initializer='zeros'", 'kernel_regularizer=None', 'bias_regularizer=None', 'activity_regularizer=None', 'kernel_constraint=None', 'bias_constraint=None', 'implementation=1'], 'Masking': ['mask_value=0.0'], 'MaxPool1D': ['pool_size=2', 'strides=None', "padding='valid'", "data_format='channels_last'"], 'MaxPool2D': ['pool_size=(2,2)', 'strides=None', "padding='valid'", 'data_format=None', ''], 'MaxPool3D': ['pool_size=(2,2,2)', 'strides=None', "padding='valid'", 'data_format=None', ''], 'MaxPooling1D': ['pool_size=2', 'strides=None', "padding='valid'", "data_format='channels_last'"], 'MaxPooling2D': ['pool_size=(2,2)', 'strides=None', "padding='valid'", 'data_format=None', ''], 'MaxPooling3D': ['pool_size=(2,2,2)', 'strides=None', "padding='valid'", 'data_format=None', ''], 'Maximum': [''], 'Minimum': [''], 'MultiHeadAttention': ['num_heads', 'key_dim', 'value_dim=None', 'dropout=0.0', 'use_bias=True', 'output_shape=None', 'attention_axes=None', "kernel_initializer='glorot_uniform'", "bias_initializer='zeros'", 'kernel_regularizer=None', 'bias_regularizer=None', 'activity_regularizer=None', 'kernel_constraint=None', 'bias_constraint=None'], 'Multiply': [''], 'PReLU': ["alpha_initializer='zeros'", 'alpha_regularizer=None', 'alpha_constraint=None', 'shared_axes=None'], 'Permute': ['dims'], 'RNN': ['cell', 'return_sequences=False', 'return_state=False', 'go_backwards=False', 'stateful=False', 'unroll=False', 'time_major=False'], 'ReLU': ['max_value=None', 'negative_slope=0.0', 'threshold=0.0'], 'RepeatVector': ['n'], 'Reshape': ['target_shape'], 'SeparableConv1D': ['filters', 'kernel_size', 'strides=1', "padding='valid'", 'data_format=None', 'dilation_rate=1', 'depth_multiplier=1', 'activation=None', 'use_bias=True', "depthwise_initializer='glorot_uniform'", "pointwise_initializer='glorot_uniform'", "bias_initializer='zeros'", 'depthwise_regularizer=None', 'pointwise_regularizer=None', 'bias_regularizer=None', 'activity_regularizer=None', 'depthwise_constraint=None', 'pointwise_constraint=None', 'bias_constraint=None', ''], 'SeparableConv2D': ['filters', 'kernel_size', 'strides=(1,1)', "padding='valid'", 'data_format=None', 'dilation_rate=(1,1)', 'depth_multiplier=1', 'activation=None', 'use_bias=True', "depthwise_initializer='glorot_uniform'", "pointwise_initializer='glorot_uniform'", "bias_initializer='zeros'", 'depthwise_regularizer=None', 'pointwise_regularizer=None', 'bias_regularizer=None', 'activity_regularizer=None', 'depthwise_constraint=None', 'pointwise_constraint=None', 'bias_constraint=None', ''], 'SeparableConvolution1D': ['filters', 'kernel_size', 'strides=1', "padding='valid'", 'data_format=None', 'dilation_rate=1', 'depth_multiplier=1', 'activation=None', 'use_bias=True', "depthwise_initializer='glorot_uniform'", "pointwise_initializer='glorot_uniform'", "bias_initializer='zeros'", 'depthwise_regularizer=None', 'pointwise_regularizer=None', 'bias_regularizer=None', 'activity_regularizer=None', 'depthwise_constraint=None', 'pointwise_constraint=None', 'bias_constraint=None', ''], 'SeparableConvolution2D': ['filters', 'kernel_size', 'strides=(1,1)', "padding='valid'", 'data_format=None', 'dilation_rate=(1,1)', 'depth_multiplier=1', 'activation=None', 'use_bias=True', "depthwise_initializer='glorot_uniform'", "pointwise_initializer='glorot_uniform'", "bias_initializer='zeros'", 'depthwise_regularizer=None', 'pointwise_regularizer=None', 'bias_regularizer=None', 'activity_regularizer=None', 'depthwise_constraint=None', 'pointwise_constraint=None', 'bias_constraint=None', ''], 'SimpleRNN': ['units', "activation='tanh'", 'use_bias=True', "kernel_initializer='glorot_uniform'", "recurrent_initializer='orthogonal'", "bias_initializer='zeros'", 'kernel_regularizer=None', 'recurrent_regularizer=None', 'bias_regularizer=None', 'activity_regularizer=None', 'kernel_constraint=None', 'recurrent_constraint=None', 'bias_constraint=None', 'dropout=0.0', 'recurrent_dropout=0.0', 'return_sequences=False', 'return_state=False', 'go_backwards=False', 'stateful=False', 'unroll=False'], 'SimpleRNNCell': ['units', "activation='tanh'", 'use_bias=True', "kernel_initializer='glorot_uniform'", "recurrent_initializer='orthogonal'", "bias_initializer='zeros'", 'kernel_regularizer=None', 'recurrent_regularizer=None', 'bias_regularizer=None', 'kernel_constraint=None', 'recurrent_constraint=None', 'bias_constraint=None', 'dropout=0.0', 'recurrent_dropout=0.0'], 'Softmax': ['axis=-1'], 'SpatialDropout1D': ['rate'], 'SpatialDropout2D': ['rate', 'data_format=None'], 'SpatialDropout3D': ['rate', 'data_format=None'], 'StackedRNNCells': ['cells'], 'Subtract': [''], 'ThresholdedReLU': ['theta=1.0'], 'TimeDistributed': ['layer'], 'UpSampling1D': ['size=2'], 'UpSampling2D': ['size=(2,2)', 'data_format=None', "interpolation='nearest'"], 'UpSampling3D': ['size=(2,2,2)', 'data_format=None'], 'Wrapper': ['layer'], 'ZeroPadding1D': ['padding=1'], 'ZeroPadding2D': ['padding=(1,1)', 'data_format=None'], 'ZeroPadding3D': ['padding=(1,1,1)', 'data_format=None'] };
+        owo2 = { 'AbstractRNNCell': '(203, 188, 55)', 'Activation': '(118, 37, 141)', 'ActivityRegularization': '(215, 55, 64)', 'Add': '(80, 47, 217)', 'AdditiveAttention': '(11, 75, 153)', 'AlphaDropout': '(116, 208, 246)', 'Attention': '(249, 68, 179)', 'Average': '(160, 119, 3)', 'AveragePooling1D': '(145, 126, 216)', 'AveragePooling2D': '(147, 71, 197)', 'AveragePooling3D': '(178, 165, 230)', 'AvgPool1D': '(254, 207, 121)', 'AvgPool2D': '(15, 109, 24)', 'AvgPool3D': '(139, 2, 200)', 'BatchNormalization': '(196, 140, 197)', 'Bidirectional': '(139, 104, 11)', 'Concatenate': '(10, 88, 205)', 'Conv1D': '(80, 222, 139)', 'Conv1DTranspose': '(233, 38, 163)', 'Conv2D': '(224, 136, 118)', 'Conv2DTranspose': '(164, 123, 17)', 'Conv3D': '(98, 16, 89)', 'Conv3DTranspose': '(115, 40, 11)', 'ConvLSTM2D': '(67, 223, 5)', 'Convolution1D': '(20, 4, 78)', 'Convolution1DTranspose': '(82, 75, 131)', 'Convolution2D': '(116, 66, 228)', 'Convolution2DTranspose': '(151, 102, 71)', 'Convolution3D': '(205, 208, 34)', 'Convolution3DTranspose': '(97, 119, 25)', 'Cropping1D': '(84, 101, 178)', 'Cropping2D': '(238, 98, 74)', 'Cropping3D': '(132, 103, 212)', 'Dense': '(240, 132, 132)', 'DenseFeatures': '(179, 191, 84)', 'DepthwiseConv2D': '(252, 47, 239)', 'Dot': '(14, 58, 190)', 'Dropout': '(193, 110, 31)', 'ELU': '(200, 153, 32)', 'Embedding': '(151, 74, 96)', 'Flatten': '(243, 136, 207)', 'GRU': '(142, 93, 91)', 'GRUCell': '(20, 227, 22)', 'GaussianDropout': '(145, 234, 94)', 'GaussianNoise': '(6, 200, 14)', 'GlobalAveragePooling1D': '(16, 46, 22)', 'GlobalAveragePooling2D': '(148, 98, 62)', 'GlobalAveragePooling3D': '(11, 155, 125)', 'GlobalAvgPool1D': '(18, 111, 54)', 'GlobalAvgPool2D': '(68, 177, 90)', 'GlobalAvgPool3D': '(221, 171, 252)', 'GlobalMaxPool1D': '(188, 6, 168)', 'GlobalMaxPool2D': '(118, 232, 129)', 'GlobalMaxPool3D': '(225, 90, 225)', 'GlobalMaxPooling1D': '(225, 170, 29)', 'GlobalMaxPooling2D': '(151, 61, 68)', 'GlobalMaxPooling3D': '(41, 216, 167)', 'Input': '(113, 39, 76)', 'InputLayer': '(211, 29, 1)', 'InputSpec': '(69, 97, 16)', 'LSTM': '(31, 22, 26)', 'LSTMCell': '(9, 90, 245)', 'Lambda': '(206, 109, 236)', 'Layer': '(172, 21, 187)', 'LayerNormalization': '(173, 159, 80)', 'LeakyReLU': '(192, 34, 226)', 'LocallyConnected1D': '(71, 101, 158)', 'LocallyConnected2D': '(116, 175, 7)', 'Masking': '(13, 75, 91)', 'MaxPool1D': '(98, 237, 170)', 'MaxPool2D': '(29, 171, 40)', 'MaxPool3D': '(250, 172, 169)', 'MaxPooling1D': '(150, 209, 97)', 'MaxPooling2D': '(213, 225, 16)', 'MaxPooling3D': '(208, 156, 71)', 'Maximum': '(180, 8, 53)', 'Minimum': '(195, 70, 252)', 'MultiHeadAttention': '(93, 130, 100)', 'Multiply': '(19, 161, 209)', 'PReLU': '(149, 78, 176)', 'Permute': '(229, 60, 196)', 'RNN': '(51, 55, 20)', 'ReLU': '(18, 35, 112)', 'RepeatVector': '(165, 188, 118)', 'Reshape': '(22, 81, 68)', 'SeparableConv1D': '(123, 15, 229)', 'SeparableConv2D': '(123, 179, 144)', 'SeparableConvolution1D': '(19, 5, 4)', 'SeparableConvolution2D': '(216, 211, 119)', 'SimpleRNN': '(76, 56, 230)', 'SimpleRNNCell': '(217, 133, 119)', 'Softmax': '(1, 89, 87)', 'SpatialDropout1D': '(255, 10, 54)', 'SpatialDropout2D': '(3, 118, 231)', 'SpatialDropout3D': '(44, 163, 212)', 'StackedRNNCells': '(89, 69, 98)', 'Subtract': '(176, 43, 45)', 'ThresholdedReLU': '(41, 144, 205)', 'TimeDistributed': '(32, 149, 175)', 'UpSampling1D': '(16, 115, 218)', 'UpSampling2D': '(137, 180, 236)', 'UpSampling3D': '(157, 63, 206)', 'Wrapper': '(1, 188, 246)', 'ZeroPadding1D': '(242, 95, 188)', 'ZeroPadding2D': '(194, 206, 115)', 'ZeroPadding3D': '(168, 161, 114)' }
+
+        nlayers = 0;
+        all_layers = []
+        if (Array.prototype.equals)
+            console.warn("Overriding existing Array.prototype.equals. Possible causes: New API defines the method, there's a framework conflict or you've got double inclusions in your code.");
+        // attach the .equals method to Array's prototype to call it on any array
+        Array.prototype.equals = function (array) {
+            // if the other array is a falsy value, return
+            if (!array)
+                return false;
+
+            // compare lengths - can save a lot of time
+            if (this.length != array.length)
+                return false;
+
+            for (var i = 0, l = this.length; i < l; i++) {
+                // Check if we have nested arrays
+                if (this[i] instanceof Array && array[i] instanceof Array) {
+                    // recurse into the nested arrays
+                    if (!this[i].equals(array[i]))
+                        return false;
+                }
+                else if (this[i] != array[i]) {
+                    // Warning - two different object instances will never be equal: {x:20} != {x:20}
+                    return false;
+                }
+            }
+            return true;
+        }
+        // Hide method from for-in loops
+        Object.defineProperty(Array.prototype, "equals", { enumerable: false });
+
+        all_layers = []
+
+        function add_new_layer() {
+            ah = [Object.keys(owo)[0]];
+            for (i in owo[Object.keys(owo)[0]]) {
+                ah.push(owo[Object.keys(owo)[0]][i]);
+            }
+            ah.push('')
+            all_layers.push(ah);
+
+            o = document.createElement('div');
+            
+            o.className = 'layer';
+            s = document.createElement('select');
+            for (i in Object.keys(owo)) {
+                m = document.createElement('option');
+                m.value = Object.keys(owo)[i];
+                m.innerHTML = Object.keys(owo)[i];
+                s.appendChild(m);
+            }
+            s.style.borderColor = 'rgb' + owo2[s.value];
+            o.appendChild(s);
+
+            for (i in owo[s.value]) {
+                k = document.createElement('input');
+                k.placeholder = owo[s.value][i];
+
+                if (owo[s.value][i].split('').indexOf('=') != -1) {
+                    k.value = owo[s.value][i];
+                }
+                k.style.borderColor = 'rgb' + owo2[o.children[0].value];
+                o.appendChild(k);
+            }
+            delbutton = document.createElement('button');
+            delbutton.className = 'delete';
+            delbutton.innerHTML = 'delete';
+            delbutton.onclick = function () {
+                
+                this.parentElement.remove()
+                a = []
+                for (i = 0; i < document.getElementById('layers').children.length; i++) {
+                    b = []
+                    for (j = 0; j < document.getElementById('layers').children[i].children.length; j++) {
+                        b.push(document.getElementById('layers').children[i].children[j].value);
+                    }
+                    a.push(b)
+                }
+                all_layers = a;
+            };
+            o.style.borderColor = 'rgb' + owo2[o.children[0].value];
+            delbutton.style.borderColor = 'rgb' + owo2[s.value];
+            o.appendChild(delbutton);
+
+            document.getElementById('layers').appendChild(o);
+            
+        }
+        function exp() {
+            code = `from tensorflow.keras import Sequential
+import tensorflow.keras
+model = Sequential()
+`
+            for (i in all_layers) {
+                line = "";
+                for (j = 0; j < all_layers[i].length-1; j++) {
+                    console.log(all_layers[i][j])
+                    if (j == 0) {
+                        line+= "model.add(tensorflow.keras.layers."+all_layers[i][j]+"("
+                    }
+                    if (j == 1) {
+                        line += all_layers[i][j]
+                    }
+                    if (j > 1) {
+                        line += ", " + all_layers[i][j]
+
+                    }
+                }
+                line += "))\n";
+                code += line
+            }
+            code += `\nmodel.compile(loss = document.querySelector("body > div.compile > select").value, optimizer = document.querySelector("body > div.compile3 > select").value, metrics = ["accuracy"])
+`;
+            navigator.clipboard.writeText(code);
+            document.querySelector("#compile4").innerText = "Copied!";
+            setTimeout(function () {
+                document.querySelector("#compile4").innerText = "Copy Python code";
+            }, 1000);
+        }
+        setInterval(function () {
+            u = []
+            for (i = 0; i < document.getElementById('layers').children.length;i++) {
+                f = []
+                for (j = 0; j < document.getElementById('layers').children[i].children.length; j++) {
+                    f.push(document.getElementById('layers').children[i].children[j].value);
+                }
+                u.push(f)
+            }
+
+            if (!u.equals(all_layers)) {
+                // when change layer
+                for (i = 0; i < u.length; i++) {
+                    console.log(all_layers[i][0]+" "+u[i][0])
+                    if (all_layers[i][0] != u[i][0]) {
+                        document.getElementById('layers').children[i].innerHTML = '';
+                        o = document.getElementById('layers').children[i];
+                        s = document.createElement('select');
+                        for (d in Object.keys(owo)) {
+                            m = document.createElement('option');
+                            m.value = Object.keys(owo)[d];
+                            m.innerHTML = Object.keys(owo)[d];
+                            s.appendChild(m);
+                        }
+                        s.value = u[i][0];
+                        s.style.borderColor = 'rgb' + owo2[s.value];
+                        o.style.borderColor = 'rgb' + owo2[s.value];
+                        o.appendChild(s);
+                        for (d in owo[s.value]) {
+                            k = document.createElement('input');
+                            k.placeholder = owo[s.value][d];
+                            try {
+                                if (k.placeholder.split('').indexOf('=') != -1) {
+                                    k.value = k.placeholder;
+                                }
+                            } catch (e) {
+
+                            }
+                            k.style.borderColor = 'rgb' + owo2[s.value]
+                            o.appendChild(k);
+                        }
+                        delbutton = document.createElement('button');
+                        delbutton.className = 'delete';
+                        delbutton.innerHTML = 'delete';
+                        delbutton.onclick = function () {
+                            this.parentElement.remove()
+                            a = []
+                            for (i = 0; i < document.getElementById('layers').children.length; i++) {
+                                b = []
+                                for (j = 0; j < document.getElementById('layers').children[i].children.length; j++) {
+                                    b.push(document.getElementById('layers').children[i].children[j].value);
+                                }
+                                a.push(b)
+                            }
+                            all_layers = a;
+                        };
+                        delbutton.style.borderColor = 'rgb' + owo2[s.value];
+                        o.appendChild(delbutton);
+
+                        a = []
+                        for (i = 0; i < document.getElementById('layers').children.length; i++) {
+                            b = []
+                            for (j = 0; j < document.getElementById('layers').children[i].children.length; j++) {
+                                b.push(document.getElementById('layers').children[i].children[j].value);
+                            }
+                            a.push(b)
+                        }
+
+                        all_layers = a;
+                        break;
+                    }
+                    // when change params
+                    for (j = 1; j < u[i].length; j++) {
+                        if (all_layers[i][j] != u[i][j]) {
+                            all_layers[i][j] = u[i][j]
+                            for (i = 0; i < document.getElementById('layers').children.length; i++) {
+                                for (j = 0; j < document.getElementById('layers').children[i].children.length; j++) {
+                                    document.getElementById('layers').children[i].children[j].value = all_layers[i][j];
+                                }
+                            }
+                        }
+
+                    }
+                }
+
+
+               
+
+
+            }
+
+            
+        }, 0);
+
+
+        
+    </script>
+</body>
+</html>
